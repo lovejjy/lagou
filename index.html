@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,minimum-scale=1.0,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1.0">
+    <meta name="format-detection" content="telephone=no,email=no,address=no">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>拉勾网</h1>
+    </header>
+    <section>
+        <div class="top">
+            <p>10秒钟定制职位</p>
+            <p>去登录</p>
+        </div>
+        <!-- <div class="main">
+            <dl>
+                <dt><img src="img/t1.png" alt=""></dt>
+                <dd>
+                    <h3>聪慧网</h3>
+                    <p><span>dsdsds</span><span>dsds</span></p>
+                    <p>dsds</p>
+                </dd>
+            </dl>
+        </div> -->
+    </section>
+    <footer>
+        <a href="javascript:;">职位</a>
+        <a href="javascript:;">搜索</a>
+        <a href="javascript:;">我的</a>
+    </footer>
+    <div class="div">
+        <ul>
+            <li><img src="img/t2.png" alt=""></li>
+            <li><img src="img/t3.png" alt=""></li>
+            <li><img src="img/t4.png" alt=""></li>
+        </ul>
+        <span class="spn">&times;</span>
+    </div>
+    <script>
+        var section=document.querySelector('section');
+        var spn=document.querySelector('.spn');
+        var div=document.querySelector('.div');
+        var ajax = function (){
+            return new Promise(function(resolve,reject){
+                var xhr=null;
+                if(window.XMLHttpRequest){
+                    xhr= new XMLHttpRequest();
+                }else{
+                    xhr= new ActiveXObject("Micrsoft XMLHTTP");
+                }
+                xhr.open("get","http://localhost:8080/data",true);
+                xhr.send(null);
+                xhr.onreadystatechange=function(){
+                    if(xhr.readyState != 4) return;
+                    if(xhr.status == 200){
+                        resolve(xhr.responseText)
+                    }else{
+                        reject(xhr.statusText)
+                    }
+                }
+            })
+        }
+        ajax().then(function(result){
+            var data=JSON.parse(result);
+            var str="";
+            for( i in data){
+                console.log(data[i])
+                str+="<div class='main'><dl><dt><img src="+data[i].img+"></dt><dd><h3>"+data[i].title+"</h3><p class='p'><span>"+data[i].address+"</span><span class='bg'>"+data[i].price+"</span></p><p>"+data[i].time+"</p></dd></dl></div>"
+            }
+            section.innerHTML+=str; 
+        })
+
+        spn.onclick=function(){
+            document.body.removeChild(div);
+        }
+    </script>
+</body>
+</html>
